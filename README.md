@@ -38,3 +38,47 @@ A payment belongs to one booking (many-to-one relationship with Booking).
 A rating belongs to one user (many-to-one relationship with User).
 
 A rating belongs to one hotel (many-to-one relationship with Hotel).
+
+
+###### filngs on the bd
+# user 
+{
+  "email": "test@example.com",
+  "password": "password123",
+  "role": "guest"
+}
+{
+  "email": "erick@gmail.com",
+  "password": "micky1234",
+  "role": "guest"
+}
+
+# Bookings 
+{
+  "room_id": 1,
+  "check_in_date": "2023-12-15",
+  "check_out_date": "2023-12-20"
+}
+
+# Hotels
+
+{
+    "name": "Sunset Paradise Hotel",
+    "location": "Watamu, Kenya",
+    "description": "A serene hotel with stunning ocean views.",
+    "image_url": "https://example.com/sunset_paradise.jpg"
+}
+
+# payment
+
+
+# Ratings 
+
+# Rooms
+{
+    "hotel_id": 1,
+    "room_type": "Suite",
+    "price_per_night": 150.0,
+    "available": true,
+    "image_url": "https://example.com/suite.jpg"
+}

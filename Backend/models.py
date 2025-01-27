@@ -1,5 +1,9 @@
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
+from flask_migrate import Migrate
+from sqlalchemy import MetaData
+
+metadata = MetaData
 
 db = SQLAlchemy()
 
@@ -19,6 +23,7 @@ class Hotel(db.Model):
     name = db.Column(db.String(100), nullable=False)
     location = db.Column(db.String(200), nullable=False)
     description = db.Column(db.Text)
+    image_url = db.Column(db.String(255))
     rooms = db.relationship('Room', backref='hotel', lazy=True)
     ratings = db.relationship('Rating', backref='hotel', lazy=True)
 
@@ -29,6 +34,7 @@ class Room(db.Model):
     room_type = db.Column(db.String(50), nullable=False)  # kuna state kama za  single, double, suite etc....
     price_per_night = db.Column(db.Float, nullable=False)
     available = db.Column(db.Boolean, default=True)
+    image_url = db.Column(db.String(255))
     bookings = db.relationship('Booking', backref='room', lazy=True)
 
 # Booking Model
@@ -55,6 +61,6 @@ class Rating(db.Model):
     rating_id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('user.user_id'), nullable=False)
     hotel_id = db.Column(db.Integer, db.ForeignKey('hotel.hotel_id'), nullable=False)
-    rating = db.Column(db.Integer, nullable=False)  # e.g., 1 to 5
+    rating = db.Column(db.Integer, nullable=False)  # e.g., 1 to 5 the five ratting stars(-,-)
     review = db.Column(db.Text)
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
