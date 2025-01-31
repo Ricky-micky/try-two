@@ -1,72 +1,38 @@
-from flask import jsonify, request, Blueprint
+from flask import Blueprint, request, jsonify
 from models import db, Hotel
 
-hotel_bp = Blueprint('hotel_bp', __name__)
+bp = Blueprint('hotel_views', __name__)
 
-@hotel_bp.route('/hotels', methods=['POST'])
-def add_hotel():
-    try:
-        data = request.get_json()  # Parse JSON data from the request body
+# Create Hotel
+@bp.route('/hotels', methods=['POST'])
+def create_hotel():
+    data = request.get_json()
+    new_hotel = Hotel(name=data['name'], location=data['location'], description=data.get('description'))
+    db.session.add(new_hotel)
+    db.session.commit()
+    return jsonify({'id': new_hotel.hotel_id}), 201
 
-        # Extract hotel details from the request data
-        name = data.get('name')
-        location = data.get('location')
-        description = data.get('description', '')
-        image_url = data.get('image_url', '')
-
-        # Validate required fields
-        if not name or not location:
-            return jsonify({'error': 'Name and location are required'}), 400
-
-        # Create and save the new hotel to the database
-        new_hotel = Hotel(
-            name=name,
-            location=location,
-            description=description,
-            image_url=image_url
-        )
-        db.session.add(new_hotel)
-        db.session.commit()
-
-        return jsonify({'message': 'Hotel added successfully!'}), 201
-
-    except Exception as e:
-        return jsonify({'error': str(e)}), 500
-
-
-@hotel_bp.route('/hotels', methods=['GET'])
+# Read Hotels
+@bp.route('/hotels', methods=['GET'])
 def get_hotels():
-    try:
-        hotels = Hotel.query.all()  # Fetch all hotels from the database
-        hotel_list = [
-            {
-                "hotel_id": hotel.hotel_id,
-                "name": hotel.name,
-                "location": hotel.location,
-                "description": hotel.description,
-                "image_url": hotel.image_url
-            } for hotel in hotels
-        ]
-        return jsonify(hotel_list), 200
+    hotels = Hotel.query.all()
+    return jsonify([{'id': hotel.hotel_id, 'name': hotel.name} for hotel in hotels])
 
-    except Exception as e:
-        return jsonify({'error': str(e)}), 500
+# Update Hotel
+@bp.route('/hotels/<int:hotel_id>', methods=['PUT'])
+def update_hotel(hotel_id):
+    data = request.get_json()
+    hotel = Hotel.query.get_or_404(hotel_id)
+    hotel.name = data['name']
+    hotel.location = data['location']
+    hotel.description = data.get('description')
+    db.session.commit()
+    return jsonify({'id': hotel.hotel_id})
 
-
-@hotel_bp.route('/hotels/<int:hotel_id>', methods=['GET'])
-def get_hotel(hotel_id):
-    try:
-        hotel = Hotel.query.get(hotel_id)  # Fetch a single hotel by ID
-        if not hotel:
-            return jsonify({"error": "Hotel not found"}), 404
-        
-        return jsonify({
-            "hotel_id": hotel.hotel_id,
-            "name": hotel.name,
-            "location": hotel.location,
-            "description": hotel.description,
-            "image_url": hotel.image_url
-        }), 200
-
-    except Exception as e:
-        return jsonify({'error': str(e)}), 500
+# Delete Hotel
+@bp.route('/hotels/<int:hotel_id>', methods=['DELETE'])
+def delete_hotel(hotel_id):
+    hotel = Hotel.query.get_or_404(hotel_id)
+    db.session.delete(hotel)
+    db.session.commit()
+    return '', 204

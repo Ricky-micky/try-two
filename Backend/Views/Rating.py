@@ -1,29 +1,43 @@
-from flask import jsonify, request, Blueprint
-from models import db, Rating, Hotel
-from flask_jwt_extended import jwt_required, get_jwt_identity
+from flask import Blueprint, request, jsonify
+from models import db, Rating
 
-rating_bp = Blueprint('rating_bp', __name__)
+bp = Blueprint('rating_views', __name__)
 
-@rating_bp.route('/ratings', methods=['POST'])
-@jwt_required()
+# Create Rating
+@bp.route('/ratings', methods=['POST'])
 def create_rating():
-    data = request.get_json()
-    user_id = get_jwt_identity()
-    hotel_id = data.get('hotel_id')
-    rating = data.get('rating')
-    review = data.get('review')
+   data = request.get_json()
+   new_rating = Rating(
+       user_id=data['user_id'],
+       hotel_id=data['hotel_id'],
+       rating=data['rating'],
+       review=data.get('review')
+   )
+   db.session.add(new_rating)
+   db.session.commit()
+   return jsonify({'id': new_rating.rating_id}), 201
 
-    hotel = Hotel.query.get(hotel_id)
-    if not hotel:
-        return jsonify({"error": "Hotel not found"}), 404
+# Read Ratings  
+@bp.route('/ratings', methods=['GET'])  
+def get_ratings():  
+ ratings = Rating.query.all()  
+ return jsonify([{'id': rating.rating_id} for rating in ratings])  
 
-    new_rating = Rating(
-        user_id=user_id,
-        hotel_id=hotel_id,
-        rating=rating,
-        review=review
-    )
-    db.session.add(new_rating)
-    db.session.commit()
+ # Update Rating  
+ @bp.route('/ratings/<int:rating_id>', methods=['PUT'])  
+ def update_rating(rating_id):  
+  data = request.get_json()  
+ rating = Rating.query.get_or_404(rating_id)  
+ rating.rating= data['rating']   
+ rating.review= data.get('review')   
+ db.session.commit()   
+ return jsonify({'id': rating.rating})  
 
-    return jsonify({"message": "Rating added successfully"}), 201
+ # Delete Rating  
+ @bp.route('/ratings/<int:rating_id>', methods=['DELETE'])  
+ def delete_rating(rating_id):  
+  rating= Rating.query.get_or_404(rating)   
+ db.session.delete(rating)   
+ db.session.commit()   
+ return '', 204  
+

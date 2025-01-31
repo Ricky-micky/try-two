@@ -7,27 +7,29 @@ import Book from "./Pages/Book"
 import PaymentPage from "./Pages/PaymentPage";
 import Navbar from "./Components/Navbar";
 import Logout from "./Pages/logout";
-import Header from "./Components/Header";
+import AddHotels from "./Pages/AddHotels";
+// import Header from "./Components/Header";
 import "./App.css";
 
 export default function App() {
   return (
-    <Router>
-      <Header/>
-      <Navbar />
+    
+      
+      
       <div>
+        <Navbar />
         <Routes>
           <Route path="/" element={<Register />} />{" "}
           {/* Redirect to Register page */}
           <Route path="/home" element={<Home />} />
           <Route path="/book" element={<Book />} />
-          {/* <Route path="/register" element={<Register />} /> */}
+          <Route path="/hotel" element={<AddHotels />} />
           <Route path="/paymentpage" element={<PaymentPage />} />
           <Route path="/login" element={<Login />} />
           <Route path="/logout" element={<Logout />} />
         </Routes>
+
       </div>
-     
-    </Router>
+    
   );
 }

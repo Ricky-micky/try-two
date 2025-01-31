@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 
 function Navbar() {
   return (
-    <nav className="bg-vilet-950 text-white py-4 px-6 shadow-md  ">
+    <nav className="bg-vilet-950 text-red py-4 px-6 shadow-md  ">
       <div className="flex justify-between items-center">
    
 
@@ -15,9 +15,7 @@ function Navbar() {
           <Link to="/book" className="hover:text-gray-300">
             Book
           </Link>
-          <Link to="/profile" className="hover:text-gray-300">
-            Profile
-          </Link>
+          
           <Link to="/hotel" className="hover:text-gray-300">
             Hotel
           </Link>

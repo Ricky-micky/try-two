@@ -2,10 +2,10 @@ from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
 from flask_migrate import Migrate
 from sqlalchemy import MetaData
+from app import db 
 
 metadata = MetaData
 
-db = SQLAlchemy()
 
 # User Model
 class User(db.Model):

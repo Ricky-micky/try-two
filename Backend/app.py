@@ -1,57 +1,28 @@
-from flask import Flask, jsonify, request
+from flask import Flask, session
+from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
-from models import db
-from flask_jwt_extended import JWTManager, create_access_token
-from datetime import timedelta
-from flask_mail import Mail
-from flask_cors import CORS
+from Views import user, Hotel, Room, Booking, Payment, Rating
 
 # Initialize Flask app
 app = Flask(__name__)
 
-# Enable CORS
-CORS(app)
-
-# Database configuration
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///hotel_booking.db'
+# Configuration (no separate config file)
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///hotel_booking.db'  # Replace with your database URI if needed
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+app.config['SECRET_KEY'] = 'your_secret_key_here'  # Set a secret key for session management
 
-# Initialize Flask-Migrate for database migrations
+# Initialize extensions
+db = SQLAlchemy(app)
 migrate = Migrate(app, db)
-db.init_app(app)
 
-# Flask-Mail configuration
-app.config["MAIL_SERVER"] = 'smtp.gmail.com'
-app.config["MAIL_PORT"] = 587
-app.config["MAIL_USE_TLS"] = True
-app.config["MAIL_USE_SSL"] = False
-app.config["MAIL_USERNAME"] = "tembo4401@gmail.com"
-app.config["MAIL_PASSWORD"] = "ruua rwkk zhjy gwte"  # Replace with actual password
-app.config["MAIL_DEFAULT_SENDER"] = "tembo4401@gmail.com"
-mail = Mail(app)
+# Register Blueprints for modular routes
+app.register_blueprint(user.bp)
+app.register_blueprint(Hotel.bp)
+app.register_blueprint(Room.bp)
+app.register_blueprint(Booking.bp)
+app.register_blueprint(Payment.bp)
+app.register_blueprint(Rating.bp)
 
-# JWT configuration
-app.config["JWT_SECRET_KEY"] = "jiyucfvbkaudhudkvfbt"
-app.config["JWT_ACCESS_TOKEN_EXPIRES"] = timedelta(hours=5)
-jwt = JWTManager(app)
-jwt.init_app(app)
-
-# Import and register blueprints
-from Views.auth import auth_bp
-from Views.User import user_bp
-from Views.Hotel import hotel_bp
-from Views.Room import room_bp
-from Views.Booking import booking_bp
-from Views.Payment import payment_bp
-from Views.Rating import rating_bp
-
-app.register_blueprint(auth_bp)
-app.register_blueprint(user_bp)
-app.register_blueprint(hotel_bp)
-app.register_blueprint(room_bp)
-app.register_blueprint(booking_bp)
-app.register_blueprint(payment_bp)
-app.register_blueprint(rating_bp)
-
+# Run the application
 if __name__ == '__main__':
     app.run(debug=True)
