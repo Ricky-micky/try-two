@@ -1,16 +1,15 @@
 from flask import Flask, jsonify, request
 from flask_migrate import Migrate
 from models import db
-from flask_jwt_extended import JWTManager
+from flask_jwt_extended import JWTManager, create_access_token
 from datetime import timedelta
 from flask_mail import Mail
 from flask_cors import CORS
 
-
 # Initialize Flask app
 app = Flask(__name__)
 
-# Enableing  CORS
+# Enable CORS
 CORS(app)
 
 # Database configuration
@@ -27,15 +26,13 @@ app.config["MAIL_PORT"] = 587
 app.config["MAIL_USE_TLS"] = True
 app.config["MAIL_USE_SSL"] = False
 app.config["MAIL_USERNAME"] = "tembo4401@gmail.com"
-app.config["MAIL_PASSWORD"] = ""
+app.config["MAIL_PASSWORD"] = "ruua rwkk zhjy gwte"  # Replace with actual password
 app.config["MAIL_DEFAULT_SENDER"] = "tembo4401@gmail.com"
-
 mail = Mail(app)
 
 # JWT configuration
 app.config["JWT_SECRET_KEY"] = "jiyucfvbkaudhudkvfbt"
-app.config["JWT_ACCESS_TOKEN_EXPIRES"] = timedelta(minutes=5)
-
+app.config["JWT_ACCESS_TOKEN_EXPIRES"] = timedelta(hours=5)
 jwt = JWTManager(app)
 jwt.init_app(app)
 
@@ -56,13 +53,5 @@ app.register_blueprint(booking_bp)
 app.register_blueprint(payment_bp)
 app.register_blueprint(rating_bp)
 
-# # Token blocklist check
-# @jwt.token_in_blocklist_loader
-# def check_if_token_revoked(jwt_header, jwt_payload: dict) -> bool:
-#     jti = jwt_payload["jti"]
-#     token = db.session.query(TokenBlocklist.id).filter_by(jti=jti).scalar()
-#     return token is not None
-
-# Run the application
 if __name__ == '__main__':
     app.run(debug=True)

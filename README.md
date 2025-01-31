@@ -82,3 +82,9 @@ A rating belongs to one hotel (many-to-one relationship with Hotel).
     "available": true,
     "image_url": "https://example.com/suite.jpg"
 }
+
+
+### EMAIL
+1:ruua rwkk zhjy gwte
+2:import { useRoomContext } from "./RoomContext";
+ruua rwkk zhjy gwte
