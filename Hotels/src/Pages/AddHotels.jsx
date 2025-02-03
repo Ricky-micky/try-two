@@ -19,9 +19,9 @@ const AddHotels = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setResponseMessage(""); // Reset previous response message
+    setResponseMessage(""); // Reset previous message
 
-    const { name, location, description, image_url } = hotelData;
+    const { name, location } = hotelData;
 
     if (!name || !location) {
       setResponseMessage("Name and Location are required.");
@@ -29,7 +29,8 @@ const AddHotels = () => {
     }
 
     try {
-      const response = await fetch("/hotels", {
+      const response = await fetch("http://localhost:5000/hotels", {
+        // Ensure correct API URL
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -40,7 +41,13 @@ const AddHotels = () => {
       const data = await response.json();
 
       if (response.ok) {
-        setResponseMessage(data.message || "Hotel added successfully!");
+        setResponseMessage("Hotel added successfully!");
+        setHotelData({
+          name: "",
+          location: "",
+          description: "",
+          image_url: "",
+        }); // Clear form
       } else {
         setResponseMessage(data.error || "An error occurred.");
       }
@@ -56,91 +63,75 @@ const AddHotels = () => {
       </h2>
       <form onSubmit={handleSubmit} className="space-y-4">
         <div>
-          <label
-            htmlFor="name"
-            className="block text-lg font-medium text-gray-700"
-          >
+          <label className="block text-lg font-medium text-gray-700">
             Hotel Name
           </label>
           <input
             type="text"
-            id="name"
             name="name"
             value={hotelData.name}
             onChange={handleChange}
-            className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            className="w-full p-3 border rounded-md focus:ring-2 focus:ring-indigo-500"
             placeholder="Enter hotel name"
             required
           />
         </div>
 
         <div>
-          <label
-            htmlFor="location"
-            className="block text-lg font-medium text-gray-700"
-          >
+          <label className="block text-lg font-medium text-gray-700">
             Location
           </label>
           <input
             type="text"
-            id="location"
             name="location"
             value={hotelData.location}
             onChange={handleChange}
-            className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            className="w-full p-3 border rounded-md focus:ring-2 focus:ring-indigo-500"
             placeholder="Enter hotel location"
             required
           />
         </div>
 
         <div>
-          <label
-            htmlFor="description"
-            className="block text-lg font-medium text-gray-700"
-          >
+          <label className="block text-lg font-medium text-gray-700">
             Description (Optional)
           </label>
           <textarea
-            id="description"
             name="description"
             value={hotelData.description}
             onChange={handleChange}
-            className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            className="w-full p-3 border rounded-md focus:ring-2 focus:ring-indigo-500"
             placeholder="Enter hotel description"
             rows="3"
           ></textarea>
         </div>
 
         <div>
-          <label
-            htmlFor="image_url"
-            className="block text-lg font-medium text-gray-700"
-          >
+          <label className="block text-lg font-medium text-gray-700">
             Image URL (Optional)
           </label>
           <input
             type="url"
-            id="image_url"
             name="image_url"
             value={hotelData.image_url}
             onChange={handleChange}
-            className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            className="w-full p-3 border rounded-md focus:ring-2 focus:ring-indigo-500"
             placeholder="Enter image URL"
           />
         </div>
 
         <button
           type="submit"
-          className="w-full py-3 bg-indigo-600 text-white rounded-md font-semibold hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+          className="w-full py-3 bg-indigo-600 text-white rounded-md font-semibold hover:bg-indigo-700"
         >
           Add Hotel
         </button>
       </form>
 
       {responseMessage && (
-        <div className="mt-4 text-center">
-          <p className="text-lg font-medium text-gray-700">{responseMessage}</p>
-        </div>
+        <p className="mt-4 text-center text-lg text-gray-700">
+          {responseMessage}
+        </p>
       )}
     </div>
   );

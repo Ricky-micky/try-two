@@ -1,21 +1,25 @@
-from flask import Flask, session
+from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
-from Views import user, Hotel, Room, Booking, Payment, Rating
-
+from flask_cors import CORS
+import os
 # Initialize Flask app
 app = Flask(__name__)
 
-# Configuration (no separate config file)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///hotel_booking.db'  # Replace with your database URI if needed
+CORS(app)
+
+# Configuration
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///hotel_booking.db'  
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-app.config['SECRET_KEY'] = 'your_secret_key_here'  # Set a secret key for session management
+app.config['SECRET_KEY'] = 'your_secret_key_here'  
 
 # Initialize extensions
-db = SQLAlchemy(app)
+from models import db  # Import db AFTER defining the app
+db.init_app(app)  # Bind db to app
 migrate = Migrate(app, db)
 
-# Register Blueprints for modular routes
+# Import views after db is initialized
+from Views import user, Hotel, Room, Booking, Payment, Rating
 app.register_blueprint(user.bp)
 app.register_blueprint(Hotel.bp)
 app.register_blueprint(Room.bp)
@@ -23,6 +27,5 @@ app.register_blueprint(Booking.bp)
 app.register_blueprint(Payment.bp)
 app.register_blueprint(Rating.bp)
 
-# Run the application
 if __name__ == '__main__':
     app.run(debug=True)

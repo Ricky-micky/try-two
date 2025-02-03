@@ -7,7 +7,9 @@ bp = Blueprint('hotel_views', __name__)
 @bp.route('/hotels', methods=['POST'])
 def create_hotel():
     data = request.get_json()
-    new_hotel = Hotel(name=data['name'], location=data['location'], description=data.get('description'))
+    new_hotel = Hotel(name=data['name'],
+    location=data['location'], 
+    description=data.get('description'))
     db.session.add(new_hotel)
     db.session.commit()
     return jsonify({'id': new_hotel.hotel_id}), 201

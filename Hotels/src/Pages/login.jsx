@@ -1,11 +1,9 @@
-// src/components/login.jsx
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-const Login = () => {
+const Login = ({ setIsAuthenticated }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [currentUser, setCurrentUser] = useState(null);
   const navigate = useNavigate();
 
   const handleLogin = async (e) => {
@@ -22,12 +20,8 @@ const Login = () => {
       if (response.ok) {
         const data = await response.json();
         localStorage.setItem("access_token", data.access_token);
-
-        // Fetch current user details after login
-        await fetchCurrentUser(data.id);
-
-        alert("Login successful! Redirecting to home...");
-        navigate("/home"); // Redirect to home or user dashboard
+        setIsAuthenticated(true); // Update authentication state
+        navigate("/home"); // Redirect to home page
       } else {
         const errorData = await response.json();
         alert(errorData.error);
@@ -38,55 +32,47 @@ const Login = () => {
     }
   };
 
-  const fetchCurrentUser = async (userId) => {
-    try {
-      const response = await fetch(
-        `http://localhost:5000/users/${userId}`,
-        {
-          method: "GET",
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("access_token")}`,
-          },
-        }
-      );
-
-      if (response.ok) {
-        const userData = await response.json();
-        setCurrentUser(userData);
-      } else {
-        alert("Failed to fetch current user details.");
-      }
-    } catch (error) {
-      console.error("Error fetching current user:", error);
-    }
-  };
-
   return (
-    <div>
-      <h2>Login</h2>
-      <form onSubmit={handleLogin}>
-        <input
-          type="email"
-          placeholder="Email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          required
-        />
-        <input
-          type="password"
-          placeholder="Password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          required
-        />
-        <button type="submit">Login</button>
-      </form>
-      {currentUser && (
-        <div>
-          <h3>Welcome, {currentUser.email}!</h3>
-          <p>Role: {currentUser.role}</p>
-        </div>
-      )}
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-r from-blue-900 to-black">
+      <div className="bg-white p-8 rounded-lg shadow-2xl w-full max-w-md">
+        <h2 className="text-3xl font-bold text-center text-blue-900 mb-6">
+          Login
+        </h2>
+        <form onSubmit={handleLogin} className="space-y-6">
+          <div>
+            <label className="block text-sm font-medium text-gray-700">
+              Email
+            </label>
+            <input
+              type="email"
+              placeholder="Enter your email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+              className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-orange-500 focus:border-orange-500"
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700">
+              Password
+            </label>
+            <input
+              type="password"
+              placeholder="Enter your password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+              className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-orange-500 focus:border-orange-500"
+            />
+          </div>
+          <button
+            type="submit"
+            className="w-full bg-orange-500 text-white py-2 px-4 rounded-md hover:bg-orange-600 transition duration-300"
+          >
+            Login
+          </button>
+        </form>
+      </div>
     </div>
   );
 };

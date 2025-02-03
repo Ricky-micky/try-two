@@ -22,8 +22,30 @@ def create_room():
 @bp.route('/rooms', methods=['GET'])
 def get_rooms():
     rooms = Room.query.all()
-    return jsonify([{'id': room.room_id, 'type': room.room_type} for room in rooms])
+    room_list = [
+        {
+            'id': room.room_id,
+            'type': room.room_type,
+            'price_per_night': room.price_per_night,
+            'available': room.available,
+            'image_url': room.image_url  # Check if this has a valid URL
+        } 
+        for room in rooms
+    ]
+    print(room_list)  # Debugging: Check the output in the terminal
+    return jsonify(room_list)
 
+
+#     rooms = Room.query.all()
+#     return jsonify([  {
+#             'id': room.room_id,
+#             'type': room.room_type,
+#             'price_per_night': room.price_per_night,
+#             'available': room.available,
+#             'image_url': room.image_url
+#         }  for room in rooms])
+
+# print(room)
 # Update Room
 @bp.route('/rooms/<int:room_id>', methods=['PUT'])
 def update_room(room_id):

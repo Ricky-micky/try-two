@@ -1,18 +1,15 @@
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
-from flask_migrate import Migrate
 from sqlalchemy import MetaData
-from app import db 
 
-metadata = MetaData
-
+db = SQLAlchemy()  # Define db here
 
 # User Model
 class User(db.Model):
     user_id = db.Column(db.Integer, primary_key=True)
     email = db.Column(db.String(100), unique=True, nullable=False)
     password = db.Column(db.String(200), nullable=False)
-    role = db.Column(db.String(20), default='guest')  # are you a  guest or admin
+    role = db.Column(db.String(20), default='guest')  
     bookings = db.relationship('Booking', backref='user', lazy=True)
     ratings = db.relationship('Rating', backref='user', lazy=True)
     payments = db.relationship('Payment', backref='user', lazy=True)
@@ -23,7 +20,7 @@ class Hotel(db.Model):
     name = db.Column(db.String(100), nullable=False)
     location = db.Column(db.String(200), nullable=False)
     description = db.Column(db.Text)
-    image_url = db.Column(db.String(255))
+    image_url = db.Column(db.String(255),nullable=False)
     rooms = db.relationship('Room', backref='hotel', lazy=True)
     ratings = db.relationship('Rating', backref='hotel', lazy=True)
 
@@ -34,7 +31,7 @@ class Room(db.Model):
     room_type = db.Column(db.String(50), nullable=False)  # kuna state kama za  single, double, suite etc....
     price_per_night = db.Column(db.Float, nullable=False)
     available = db.Column(db.Boolean, default=True)
-    image_url = db.Column(db.String(255))
+    image_url = db.Column(db.String(255),nullable=False)
     bookings = db.relationship('Booking', backref='room', lazy=True)
 
 # Booking Model
