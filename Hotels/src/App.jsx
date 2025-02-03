@@ -4,7 +4,6 @@ import {
   Routes,
   Route,
   Navigate,
-  Link
 } from "react-router-dom";
 import Home from "./Pages/Home";
 import Login from "./Pages/login";
@@ -16,6 +15,7 @@ import Logout from "./Pages/logout";
 import AddHotels from "./Pages/AddHotels";
 import Header from "./Components/Header";
 import Other from "./Pages/Other";
+import Ricky from "./Components/ricky"; // Make sure this is properly imported
 import "./App.css";
 
 export default function App() {
@@ -45,7 +45,7 @@ export default function App() {
         <Route path="/register" element={<Register />} />
         <Route
           path="/home"
-          element={isAuthenticated ? <Home /> : <Navigate to="/" />}
+          element={isAuthenticated ? <Home /> : <Navigate to="/ricky" />}
         />
         <Route
           path="/book"
@@ -67,14 +67,12 @@ export default function App() {
           path="/logout"
           element={<Logout setIsAuthenticated={setIsAuthenticated} />}
         />
-      </Routes>
 
-      <Link
-        to="/Other"
-        className="hover:text-blue-200 transition duration-300 font-semibold"
-      >
-        Other
-      </Link>
+        {/* Conditional route for unauthenticated users */}
+        <Route path="/ricky" element={<Ricky />} />
+        {/* Route to other page */}
+        <Route path="/other" element={<Other />} />
+      </Routes>
     </>
   );
 }
