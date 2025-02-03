@@ -11,12 +11,14 @@ def create_payment():
         user_id=data['user_id'],
         booking_id=data['booking_id'],
         amount=data['amount'],
-        status=data.get('status', 'pending')
-     )
+        status=data.get('status', 'pending')  # Default status is 'pending'
+    )
     db.session.add(new_payment)
     db.session.commit()
-    return jsonify({'id': new_payment.payment_id}), 201
-
+    return jsonify({
+        'id': new_payment.payment_id,
+        'message': 'Payment successful. Waiting for approval from the hotel.'
+    }), 201
  # Read Payments  
 @bp.route('/payments', methods=['GET'])  
 def get_payments():  

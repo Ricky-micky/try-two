@@ -4,11 +4,10 @@ import Login from "./login";
 
 const Home = () => {
   const [rooms, setRooms] = useState([]);
-  const [searchTerm, setSearchTerm] = useState(""); // State for search input
+  const [searchTerm, setSearchTerm] = useState("");
   const navigate = useNavigate();
   const isAuthenticated = localStorage.getItem("access_token");
 
-  // Fetch rooms from the backend
   useEffect(() => {
     if (!isAuthenticated) return;
     fetch("http://localhost:5000/rooms")
@@ -17,12 +16,10 @@ const Home = () => {
       .catch((error) => console.error("Error fetching rooms:", error));
   }, [isAuthenticated]);
 
-  // Filter rooms based on search term
   const filteredRooms = rooms.filter((room) =>
     room.type.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  // Redirect to login if not authenticated
   if (!isAuthenticated) {
     return <Login />;
   }
@@ -30,8 +27,6 @@ const Home = () => {
   return (
     <div className="container mx-auto p-4">
       <h1 className="text-3xl font-bold text-center mb-6">Available Rooms</h1>
-
-      {/* Search Bar */}
       <div className="mb-8">
         <input
           type="text"
@@ -41,8 +36,6 @@ const Home = () => {
           className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
         />
       </div>
-
-      {/* Room Grid */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         {filteredRooms.length > 0 ? (
           filteredRooms.map((room) => (
@@ -65,7 +58,14 @@ const Home = () => {
               </p>
               <button
                 className="mt-4 px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors duration-300"
-                onClick={() => navigate(`/book`)} 
+                onClick={() =>
+                  navigate(`/book`, {
+                    state: {
+                      roomId: room.id,
+                      pricePerNight: room.price_per_night,
+                    },
+                  })
+                }
               >
                 Book Now
               </button>

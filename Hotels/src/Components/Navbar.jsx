@@ -18,12 +18,12 @@ function Navbar() {
           >
             Home
           </Link>
-          <Link
+          {/* <Link
             to="/book"
             className="hover:text-blue-200 transition duration-300 font-semibold"
           >
             Book
-          </Link>
+          </Link> */}
           <Link
             to="/hotel"
             className="hover:text-blue-200 transition duration-300 font-semibold"

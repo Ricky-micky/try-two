@@ -1,22 +1,32 @@
 from flask import Blueprint, request, jsonify
 from models import db, Booking
+from datetime import datetime
 
 bp = Blueprint('booking_views', __name__)
 
 # Create Booking 
-@bp.route('/bookings', methods=['POST']) 
-def create_booking(): 
- data = request.get_json() 
- new_booking = Booking( 
- user_id=data['user_id'], 
- room_id=data['room_id'], 
- check_in_date=data['check_in_date'], 
- check_out_date=data['check_out_date'] 
-) 
- db.session.add(new_booking) 
- db.session.commit() 
- return jsonify({'id': new_booking.booking_id}), 201 
+@bp.route('/bookings', methods=['POST'])
+def create_booking():
+    data = request.get_json()
+    
+    try:
+        check_in_date = datetime.strptime(data['check_in_date'], "%Y-%m-%d").date()
+        check_out_date = datetime.strptime(data['check_out_date'], "%Y-%m-%d").date()
 
+        new_booking = Booking(
+            user_id=data['user_id'],
+            room_id=data['room_id'],
+            check_in_date=check_in_date,
+            check_out_date=check_out_date
+        )
+        db.session.add(new_booking)
+        db.session.commit()
+
+        return jsonify({'id': new_booking.booking_id}), 201
+    
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({'error': str(e)}), 400
 # Read Bookings 
 @bp.route('/bookings', methods=['GET']) 
 def get_bookings(): 
