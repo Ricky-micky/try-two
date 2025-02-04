@@ -88,3 +88,7 @@ A rating belongs to one hotel (many-to-one relationship with Hotel).
 1:ruua rwkk zhjy gwte
 2:import { useRoomContext } from "./RoomContext";
 ruua rwkk zhjy gwte
+
+## lincks to the videos
+https://www.loom.com/share/0f20a27d436e4fd1ab3f4185263b6112?sid=0031bd9d-8859-4575-91aa-295f8bd994f5
+https://www.loom.com/share/ee8f23ffef87453da8dc0a4f9441866d?sid=897dbab3-536e-476b-8773-a7a8515c00ee
