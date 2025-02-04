@@ -20,7 +20,8 @@ def create_user():
 @bp.route('/users', methods=['GET'])
 def get_users():
     users = User.query.all()
-    return jsonify([{'id': user.user_id, 'email': user.email} for user in users])
+    return jsonify([user.to_dict() for user in users])
+
 
 # Update User
 @bp.route('/users/<int:user_id>', methods=['PUT'])
