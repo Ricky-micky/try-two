@@ -29,7 +29,7 @@ const AddHotels = () => {
     }
 
     try {
-      const response = await fetch("http://localhost:5000/hotels", {
+      const response = await fetch("https://try-two-5.onrender.com/hotels", {
         // Ensure correct API URL
         method: "POST",
         headers: {

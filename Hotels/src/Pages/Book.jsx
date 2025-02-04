@@ -34,7 +34,7 @@ function Book() {
       totalPrice,
     };
 
-    fetch("http://127.0.0.1:5000/bookings", {
+    fetch("https://try-two-5.onrender.com/bookings", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

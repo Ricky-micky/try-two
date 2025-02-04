@@ -8,7 +8,7 @@ const Logout = ({ setIsAuthenticated }) => {
 
   const handleLogout = async () => {
     try {
-      await fetch("http://localhost:5000/logout", {
+      await fetch("https://try-two-5.onrender.com/logout", {
         method: "DELETE",
         headers: {
           Authorization: `Bearer ${localStorage.getItem("access_token")}`,

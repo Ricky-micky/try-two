@@ -10,7 +10,7 @@ const Home = () => {
 
   useEffect(() => {
     if (!isAuthenticated) return;
-    fetch("http://localhost:5000/rooms")
+    fetch("https://try-two-5.onrender.com/rooms")
       .then((response) => response.json())
       .then((data) => setRooms(data))
       .catch((error) => console.error("Error fetching rooms:", error));

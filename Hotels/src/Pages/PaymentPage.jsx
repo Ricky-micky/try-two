@@ -59,7 +59,7 @@ function PaymentPage() {
 
       console.log("Sending booking payload:", bookingPayload); // Log the payload
 
-      const bookingResponse = await fetch("http://127.0.0.1:5000/bookings", {
+      const bookingResponse = await fetch("https://try-two-5.onrender.com/bookings", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -86,7 +86,7 @@ function PaymentPage() {
 
       console.log("Sending payment payload:", paymentPayload); // Log the payload
 
-      const paymentResponse = await fetch("http://127.0.0.1:5000/payments", {
+      const paymentResponse = await fetch("https://try-two-5.onrender.com/payments", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
