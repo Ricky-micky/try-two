@@ -8,9 +8,9 @@ flask-jwt-extended = "*"
 flask = "*"
 migrate = "*"
 gunicorn = "*"
-psycopg2-binary = "*"
 flask-cors = "*"
 flask-migrate = "*"
+psycopg2-binary = "*"
 
 [dev-packages]
 

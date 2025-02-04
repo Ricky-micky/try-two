@@ -9,7 +9,7 @@ app = Flask(__name__)
 CORS(app)
 
 # Configuration
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///hotel_booking.db'  
+app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://hotel_db_iub2_user:DE8LQ14LcSxLcnwWRfvwYxvWjRIirzkq@dpg-cugu9i1u0jms73frd7i0-a.oregon-postgres.render.com/hotel_db_iub2'  
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SECRET_KEY'] = 'your_secret_key_here'  
 
