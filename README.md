@@ -92,3 +92,8 @@ ruua rwkk zhjy gwte
 ## lincks to the videos
 https://www.loom.com/share/0f20a27d436e4fd1ab3f4185263b6112?sid=0031bd9d-8859-4575-91aa-295f8bd994f5
 https://www.loom.com/share/ee8f23ffef87453da8dc0a4f9441866d?sid=897dbab3-536e-476b-8773-a7a8515c00ee
+
+### deployment link 
+1:frontend = https://try-two-seven.vercel.app/
+2:Backend  =https://try-two-5.onrender.com
+            =https://dashboard.render.com/web/srv-cuh0m5bv2p9s73cp8sa0/deploys/dep-cuh1c79u0jms73ft0cfg
