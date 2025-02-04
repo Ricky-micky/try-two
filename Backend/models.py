@@ -2,7 +2,7 @@ from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
 from sqlalchemy import MetaData
 
-db = SQLAlchemy()  # Define db here
+db = SQLAlchemy() 
 
 # User Model
 class User(db.Model):

@@ -7,8 +7,10 @@ name = "pypi"
 flask-jwt-extended = "*"
 flask = "*"
 migrate = "*"
-flask-migrate = "*"
 gunicorn = "*"
+psycopg2-binary = "*"
+flask-cors = "*"
+flask-migrate = "*"
 
 [dev-packages]
 
